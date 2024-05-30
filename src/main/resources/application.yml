@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/glowthon
     username: root
-    password:
+    password: ${MYSQL_PASSWORD}
 
   jpa:
     generate-ddl: true
