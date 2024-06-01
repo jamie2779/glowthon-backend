@@ -1,6 +1,8 @@
-<img width="990" alt="image" src="https://github.com/jamie2779/glowthon-backend/assets/56078563/a0f9e42f-5042-455f-8b91-53dfe39676dc"># glowthon-backend
+# glowthon-backend
 2024 GLOWTHON (경북대학교 동아리 연합 해커톤)
 
+### 프로젝트 세부사항 및 기능
+[프론트엔드 레포](https://github.com/ArpaAP/glowthon-frontend)
 ###데이터베이스 ERD
 <img width="1002" alt="image" src="https://github.com/jamie2779/glowthon-backend/assets/56078563/38d167b9-813a-4bf6-b2fe-acb0e0e1fb4d">
 <img width="1015" alt="image" src="https://github.com/jamie2779/glowthon-backend/assets/56078563/a21b0831-5ec0-4304-ae16-33df32ea5fe9">
