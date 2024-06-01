@@ -1,6 +1,9 @@
 package com.glowthon.soleil.domain.menu.service;
 
 
+import com.glowthon.soleil.domain.building.entity.BuildingEntity;
+import com.glowthon.soleil.domain.facility.entity.FacilityEntity;
+import com.glowthon.soleil.domain.facility.repository.FacilityRepository;
 import com.glowthon.soleil.domain.menu.dto.MenuGetDto;
 import com.glowthon.soleil.domain.menu.dto.MenuPostDto;
 import com.glowthon.soleil.domain.menu.entity.MenuEntity;
@@ -20,11 +23,16 @@ public class MenuService {
     @Autowired
     public MenuRepository menuRepository;
 
+    @Autowired
+    public FacilityRepository facilityRepository;
+
     @Transactional
     public MenuGetDto addMenu(MenuPostDto newMenu){
+        FacilityEntity facility = facilityRepository.findById(newMenu.getFacilityId())
+                .orElseThrow(() -> new RuntimeException("Building not found"));
 
         MenuEntity menu = this.menuRepository.save(MenuEntity.builder()
-                .facility(newMenu.getFacility())
+                .facility(facility)
                 .type(newMenu.getType())
                 .menu(newMenu.getMenu())
                 .date(newMenu.getDate())
@@ -32,10 +40,10 @@ public class MenuService {
 
         return MenuGetDto.builder()
                 .id(menu.getId())
-                .facility(newMenu.getFacility())
-                .type(newMenu.getType())
-                .menu(newMenu.getMenu())
-                .date(newMenu.getDate())
+                .facility(menu.getFacility())
+                .type(menu.getType())
+                .menu(menu.getMenu())
+                .date(menu.getDate())
                 .build();
 
     }

@@ -1,6 +1,8 @@
 package com.glowthon.soleil.domain.room.service;
 
 
+import com.glowthon.soleil.domain.building.entity.BuildingEntity;
+import com.glowthon.soleil.domain.building.repository.BuildingRepository;
 import com.glowthon.soleil.domain.room.dto.RoomGetDto;
 import com.glowthon.soleil.domain.room.dto.RoomPostDto;
 import com.glowthon.soleil.domain.room.entity.RoomEntity;
@@ -16,15 +18,19 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class RoomService {
-
     @Autowired
     public RoomRepository roomRepository;
 
+    @Autowired
+    public BuildingRepository buildingRepository;
+
     @Transactional
     public RoomGetDto addRoom(RoomPostDto newRoom){
+        BuildingEntity building = buildingRepository.findById(newRoom.getBuildingId())
+                .orElseThrow(() -> new RuntimeException("Building not found"));
 
         RoomEntity room = roomRepository.save(RoomEntity.builder()
-                .building(newRoom.getBuilding())
+                .building(building)
                 .name(newRoom.getName())
                 .build());
 

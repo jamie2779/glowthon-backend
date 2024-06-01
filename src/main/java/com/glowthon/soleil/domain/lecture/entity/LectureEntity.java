@@ -1,12 +1,15 @@
 package com.glowthon.soleil.domain.lecture.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.glowthon.soleil.domain.building.entity.BuildingEntity;
 import com.glowthon.soleil.domain.room.entity.RoomEntity;
+import com.glowthon.soleil.domain.schedule.entity.ScheduleEntity;
 import com.glowthon.soleil.global.basic.BasicEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,5 +24,9 @@ public class LectureEntity extends BasicEntity {
     @ManyToOne
     @JoinColumn(name="room_id")
     private RoomEntity room;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY)
+    private List<ScheduleEntity> schedules = new ArrayList<>();
 
 }

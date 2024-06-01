@@ -18,5 +18,5 @@ public class FacilityPostDto {
     private float lat;
     private float lng;
     private String note;
-    private BuildingEntity building;
+    private Long buildingId;
 }

@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class LecturePostDto {
     private String name;
     private String professor;
-    private RoomEntity room;
+    private Long roomId;
 }

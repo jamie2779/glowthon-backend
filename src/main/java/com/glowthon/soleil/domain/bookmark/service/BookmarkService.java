@@ -4,7 +4,14 @@ package com.glowthon.soleil.domain.bookmark.service;
 import com.glowthon.soleil.domain.bookmark.dto.BookmarkGetDto;
 import com.glowthon.soleil.domain.bookmark.dto.BookmarkPostDto;
 import com.glowthon.soleil.domain.bookmark.entity.BookmarkEntity;
+import com.glowthon.soleil.domain.bookmark.entity.BookmarkType;
 import com.glowthon.soleil.domain.bookmark.repository.BookmarkRepository;
+import com.glowthon.soleil.domain.building.entity.BuildingEntity;
+import com.glowthon.soleil.domain.building.repository.BuildingRepository;
+import com.glowthon.soleil.domain.facility.entity.FacilityEntity;
+import com.glowthon.soleil.domain.facility.repository.FacilityRepository;
+import com.glowthon.soleil.domain.user.entity.UserEntity;
+import com.glowthon.soleil.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,22 +27,41 @@ public class BookmarkService {
     @Autowired
     public BookmarkRepository bookmarkRepository;
 
+    @Autowired
+    public UserRepository userRepository;
+
+    @Autowired
+    public FacilityRepository facilityRepository;
+
+    @Autowired
+    public BuildingRepository buildingRepository;
+
     @Transactional
     public BookmarkGetDto addBookmark(BookmarkPostDto newBookmark){
-
+        UserEntity user = userRepository.findById(newBookmark.getBuildingId())
+                .orElseThrow(() -> new RuntimeException("Building not found"));
+        FacilityEntity facility = null;
+        BuildingEntity building = null;
+        if(newBookmark.getType() == BookmarkType.FACILITY){
+            facility = facilityRepository.findById(newBookmark.getFacilityId())
+                    .orElseThrow(() -> new RuntimeException("Building not found"));
+        }else{
+            building = buildingRepository.findById(newBookmark.getBuildingId())
+                    .orElseThrow(() -> new RuntimeException("Building not found"));
+        }
         BookmarkEntity bookmark = bookmarkRepository.save(BookmarkEntity.builder()
-                .user(newBookmark.getUser())
+                .user(user)
                 .type(newBookmark.getType())
-                .building(newBookmark.getBuilding())
-                .facility(newBookmark.getFacility())
+                .building(building)
+                .facility(facility)
                 .build());
 
         return BookmarkGetDto.builder()
                 .id(bookmark.getId())
-                .user(newBookmark.getUser())
+                .user(bookmark.getUser())
                 .type(newBookmark.getType())
-                .building(newBookmark.getBuilding())
-                .facility(newBookmark.getFacility())
+                .building(bookmark.getBuilding())
+                .facility(bookmark.getFacility())
                 .build();
 
     }

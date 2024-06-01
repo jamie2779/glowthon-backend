@@ -1,10 +1,13 @@
 package com.glowthon.soleil.domain.pin.service;
 
 
+import com.glowthon.soleil.domain.building.entity.BuildingEntity;
 import com.glowthon.soleil.domain.pin.dto.PinGetDto;
 import com.glowthon.soleil.domain.pin.dto.PinPostDto;
 import com.glowthon.soleil.domain.pin.entity.PinEntity;
 import com.glowthon.soleil.domain.pin.repository.PinRepository;
+import com.glowthon.soleil.domain.user.entity.UserEntity;
+import com.glowthon.soleil.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +23,15 @@ public class PinService {
     @Autowired
     public PinRepository pinRepository;
 
+    @Autowired
+    public UserRepository userRepository;
+
     @Transactional
     public PinGetDto addPin(PinPostDto newPin){
-
+        UserEntity user = userRepository.findById(newPin.getUserId())
+                .orElseThrow(() -> new RuntimeException("Building not found"));
         PinEntity pin = this.pinRepository.save(PinEntity.builder()
-                .user(newPin.getUser())
+                .user(user)
                 .name(newPin.getName())
                 .lat(newPin.getLat())
                 .lng(newPin.getLng())
@@ -32,10 +39,10 @@ public class PinService {
 
         return PinGetDto.builder()
                 .id(pin.getId())
-                .user(newPin.getUser())
-                .name(newPin.getName())
-                .lat(newPin.getLat())
-                .lng(newPin.getLng())
+                .user(pin.getUser())
+                .name(pin.getName())
+                .lat(pin.getLat())
+                .lng(pin.getLng())
                 .build();
 
     }

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PinPostDto
 {
-    private UserEntity user;
+    private Long userId;
     private String name;
     private float lat;
     private float lng;

@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookmarkPostDto
 {
-    private UserEntity user;
+    private Long userId;
     private BookmarkType type;
-    private FacilityEntity facility;
-    private BuildingEntity building;
+    private Long facilityId;
+    private Long buildingId;
 }

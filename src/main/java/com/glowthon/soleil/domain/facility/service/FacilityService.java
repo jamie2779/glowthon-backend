@@ -1,6 +1,8 @@
 package com.glowthon.soleil.domain.facility.service;
 
 
+import com.glowthon.soleil.domain.building.entity.BuildingEntity;
+import com.glowthon.soleil.domain.building.repository.BuildingRepository;
 import com.glowthon.soleil.domain.facility.dto.FacilityGetDto;
 import com.glowthon.soleil.domain.facility.dto.FacilityPostDto;
 import com.glowthon.soleil.domain.facility.entity.FacilityEntity;
@@ -20,11 +22,16 @@ public class FacilityService {
     @Autowired
     public FacilityRepository facilityRepository;
 
+    @Autowired
+    public BuildingRepository buildingRepository;
+
     @Transactional
     public FacilityGetDto addFacility(FacilityPostDto newFacility){
+        BuildingEntity building = buildingRepository.findById(newFacility.getBuildingId())
+                .orElseThrow(() -> new RuntimeException("Building not found"));
 
         FacilityEntity facility = facilityRepository.save(FacilityEntity.builder()
-                .building(newFacility.getBuilding())
+                .building(building)
                 .positionType(newFacility.getPositionType())
                 .name(newFacility.getName())
                 .facilityType(newFacility.getFacilityType())

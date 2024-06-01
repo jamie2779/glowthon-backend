@@ -1,10 +1,13 @@
 package com.glowthon.soleil.domain.lecture.service;
 
 
+import com.glowthon.soleil.domain.building.entity.BuildingEntity;
 import com.glowthon.soleil.domain.lecture.dto.LectureGetDto;
 import com.glowthon.soleil.domain.lecture.dto.LecturePostDto;
 import com.glowthon.soleil.domain.lecture.entity.LectureEntity;
 import com.glowthon.soleil.domain.lecture.repository.LectureRepository;
+import com.glowthon.soleil.domain.room.entity.RoomEntity;
+import com.glowthon.soleil.domain.room.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +23,16 @@ public class LectureService {
     @Autowired
     public LectureRepository lectureRepository;
 
+    @Autowired
+    public RoomRepository roomRepository;
+
     @Transactional
     public LectureGetDto addLecture(LecturePostDto newLecture){
+        RoomEntity room = roomRepository.findById(newLecture.getRoomId())
+                .orElseThrow(() -> new RuntimeException("Building not found"));
 
         LectureEntity lecture = lectureRepository.save(LectureEntity.builder()
-                .room(newLecture.getRoom())
+                .room(room)
                 .name(newLecture.getName())
                 .professor(newLecture.getProfessor())
                 .build());

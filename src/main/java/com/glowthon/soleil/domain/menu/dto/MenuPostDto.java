@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MenuPostDto
 {
-    private FacilityEntity facility;
+    private Long facilityId;
     private MenuType type;
     private String menu;
     private LocalDateTime date;
